@@ -1,15 +1,12 @@
 {
-  "name": "aula-1",
+  "name": "aula-3",
   "version": "1.0.0",
-  "description": "",
+  "description": "- Fetch: .then()/.catch() e async/await\r - Events\r - Listeners",
   "license": "ISC",
   "author": "",
   "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "dependencies": {
-    "lodash": "^4.17.23"
   }
 }

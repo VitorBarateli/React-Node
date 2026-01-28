@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Tarefas</title>
+</head>
+
+<body>
+    <h1>Minhas Tarefas</h1>
+    <div style="margin-bottom: 30px;">
+        <h2>Nova Tarefa</h2>
+        <input type="text" id="newTaskInput" placeholder="Digite a descrição">
+        <button onclick="createTask()">Adicionar Tarefa</button>
+    </div>
+    <div id="tasks"></div>
+
+    <script>
+        async function loadTasks() {
+            const response = await fetch('http://localhost:3000/tasks');
+            const tasks = await response.json();
+
+            const tasksDiv = document.getElementById('tasks');
+            tasksDiv.innerHTML = tasks
+                .map(task => `
+                    <div style="border: 1px solid #ccc; margin: 10px; padding: 10px;">
+                        <h3>${task.descricao}</h3>
+                        <p>Status: 
+                            <select onchange="updateStatus(${task.id}, this.value)" ${task.status === 'finalizado' ? 'disabled' : ''}>
+                                <option value="aguardando" ${task.status === 'aguardando' ? 'selected' : ''}>Aguardando</option>
+                                <option value="trabalhando" ${task.status === 'trabalhando' ? 'selected' : ''}>Trabalhando</option>
+                            </select>
+                        </p>
+                        <button onclick="finishTask(${task.id})" ${task.status === 'finalizado' ? 'disabled' : ''} style="margin-top: 5px;">
+                            Finalizar Tarefa
+                        </button>
+                    </div>
+                `)
+                .join('');
+        }
+        loadTasks();
+    </script>
+
+    <script>
+        async function createTask() {
+            const input = document.getElementById('newTaskInput');
+            const description = input.value.trim();
+
+            if (!description) return;
+
+            await fetch('http://localhost:3000/tasks', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ descricao: description })
+            });
+
+            input.value = '';
+            loadTasks();
+        }
+    </script>
+
+    <script>
+        async function updateStatus(id, newStatus) {
+            try {
+                await fetch(`http://localhost:3000/tasks/${id}/status`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status: newStatus })
+                });
+                loadTasks();
+            } catch (error) {
+                alert('Erro ao atualizar status');
+            }
+        }
+    </script>
+
+    <script>
+        async function finishTask(id) {
+            try {
+                await fetch(`http://localhost:3000/tasks/${id}/finish`, {
+                    method: 'PATCH'
+                });
+                loadTasks();
+            } catch (error) {
+                alert('Erro ao finalizar tarefa');
+            }
+        }
+    </script>
+</body>
+
+</html>
