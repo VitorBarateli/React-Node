@@ -1,5 +1,4 @@
-### Principais Pontos da Aula 1:
-- CommonJS (antigo) vs ES Modules (moderno)
-- Callback
-- Arrow Function
-- Promises: .then()/.catch() e async/await
+### Principais Pontos da Aula 2:
+- Fetch: .then()/.catch() e async/await
+- Events
+- Listeners
