@@ -1,5 +1,1 @@
-### Principais Pontos da Aula 1:
-- CommonJS (antigo) vs ES Modules (moderno)
-- Callback
-- Arrow Function
-- Promises: .then()/.catch() e async/await
+## Projeto em React para a demonstração e adição de dados em uma lista
